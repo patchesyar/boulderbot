@@ -6,7 +6,6 @@ class raysfirePlugin(BasePlugin):
         def __init__(self, twitchy):
                 super(raysfirePlugin, self).__init__(twitchy)
 		
-                self.registerCommand('match', self.matchHandler)
                 self.registerCommand('shud', self.advertHandler)
                 self.registerCommand('pbs', self.bobrossHandler)
                 self.registerCommand('stream', self.twitchHandler)
@@ -40,10 +39,6 @@ class raysfirePlugin(BasePlugin):
         def twitchHandler(self, nick, commandArg):
                 print("!stream called by "+nick)
                 self.sendMessage('You can watch raysfire stream at twitch.tv/raysfire')
-
-        def matchHandler(self, nick, commandArg):
-                print("!match called by "+nick)
-                self.sendMessage('Greetings gamers, hope you’re enjoying the stream of competitive TF2. Rays has chat hidden and likely won’t see what you’re saying until the end of the match.')
 
         def advertHandler(self, nick, commandArg):
                 print("!shud called by "+nick)

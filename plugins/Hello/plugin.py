@@ -1,8 +1,10 @@
+import time #time delays to allow for multi-message commands (!match)
 from plugins.BasePlugin import BasePlugin
 #from Twitchy import modHandlers
 
-
 class HelloPlugin(BasePlugin):
+        sezcopresent=False      #Sezco hates some of the commands, so when he is present,
+                                #I try to deactivate these commands
         def __init__(self, twitchy):
                 super(HelloPlugin, self).__init__(twitchy)
 		
@@ -19,7 +21,7 @@ class HelloPlugin(BasePlugin):
                 self.registerCommand('github', self.gitHandler)
                 self.registerCommand('real', self.pogChampion)
                 self.registerCommand('kill', self.killer)
-                self.registerCommand('refresh', self.refresher)
+                #self.registerCommand('refresh', self.refresher)
                 self.registerTrigger('This is our town scrub', self.townHandler)
                 self.registerCommand('boulderbot', self.boulderHandler)
 
@@ -33,9 +35,13 @@ class HelloPlugin(BasePlugin):
                 self.sendMessage("(ง •̀_•́)ง Yeah, beat it! (ง •̀_•́)ง")
 
         def refresher(self, nick, commandArg):
+                #TODO: find out how in the architecture to "restart" the bot
                 self.__init__(self.twitchy)
 
         def killer(self, nick, commandArg):
+                #NOTE: only kills the plugin this command is in,
+                #Either use polymorphism to work for all plugins or
+                #find a way to apply it at top-level
                 self.sendMessage("Goodbye team, my fellow rocks need me elsewhere")
                 self._kill()
 
@@ -45,7 +51,7 @@ class HelloPlugin(BasePlugin):
 
         def gitHandler(self, nick, commandArg):
                 print("!gitHandler called by "+nick)
-                self.sendMessage("pystats github: https://github.com/patchesyar/pystats")
+                self.sendMessage("*NEW* Boulderbot github: https://github.com/patchesyar/boulderbot")
 
         def swagHandler(self, nick, commandArg):
                 print("!swag called by "+nick)
@@ -57,7 +63,9 @@ class HelloPlugin(BasePlugin):
 
         def matchHandler(self, nick, commandArg):
                 print("!match called by "+nick)
-                self.sendMessage('Greetings gamers, hope you’re enjoying the stream of competitive TF2. Rays has chat hidden and likely won’t see what you’re saying until the end of the match.')
+                self.sendMessage('Greetings gamers, hope you’re enjoying the stream of competitive TF2. We are in a private match and you will not be able to join.')
+                time.sleep(2)
+                self.sendMessage("If you'd like to join, please wait until we join a public server. Thank you!")
 
         def mouseHandler(self, nick, commandArg):
                 print("!transformice called by "+nick)
@@ -117,7 +125,13 @@ class HelloPlugin(BasePlugin):
                 global sezcopresent
                 if modGiven:
                         print("Moderator status given to "+ nick)
+                        if nick=="Sezco":
+                                sezcopresent=True
+                                print (str(sezcopresent))
                         #self.sendMessage("Run! "+ nick +" has been given moderator powers!")
                 else:
                         print("Moderator status removed from "+ nick)
+                        if nick=="Sezco":
+                                sezcopresent=False
+                                print (str(sezcopresent))
                         #self.sendMessage("Relax, "+ nick +" has lost moderator powers")

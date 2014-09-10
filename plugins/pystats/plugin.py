@@ -13,10 +13,9 @@ add an alt-case for players to redirect twitch usernames to steamurls. text docu
 add a confirmation notice if the lobby info is more than a day old
 """
 
+import time
 from urllib.request import *
 from plugins.BasePlugin import BasePlugin
-#from Twitchy import modHandlers
-#from Twitchy import Twitch_Channel
 
 
 predsOn= False
@@ -114,6 +113,7 @@ class PystatsPlugin(BasePlugin):
             if len(predslist)>10:
                 self.sendmessage(str(len(predslist))+" people have entered predictions")
             predmakers=""
+            time.sleep(2)
             for element in predslist:
                 predmakers+=(element[0]+" ")
             self.sendMessage(predmakers) #returns the list of all the people that made predictions
@@ -129,6 +129,8 @@ class PystatsPlugin(BasePlugin):
                     
 
     def subtestHandler(self, nick, commandArg):
+        #Simple test function for the substitution.
+        #Bounces back a substitute if any
         self.sendMessage("I got "+ findSubstitutes(nick))
 
     def placeholder(self, nick, commandArg):
