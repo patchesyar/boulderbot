@@ -1,5 +1,5 @@
 from plugins.BasePlugin import BasePlugin
-#from Twitchy import modHandlers
+
 
 bonkcount=0
 
@@ -11,7 +11,6 @@ class tomdiamondPlugin(BasePlugin):
             self.registerCommand('varsaa', self.shehnahandler)
             self.registerTrigger('sprotsblades', self.sprotshandler)
             self.registerCommand('steam', self.steamHandler)
-            self.registerCommand('match', self.matchHandler)
             self.registerTrigger('bonk', self.bonkHandler)
             self.registerCommand('tomdiamond', self.tomHandler)
 
@@ -25,10 +24,6 @@ class tomdiamondPlugin(BasePlugin):
             bonkcount+=1
             self.sendMessage("Tom has bonked! Current bonk count is "+bonkcount+" meaning he has to do "+bonkcount*5+" pushups")
             
-        def matchHandler(self, nick, commandArg):
-            print("!match called by "+nick)
-            self.sendMessage("Hope you're enjoying the stream of competitive TF2, Tom is focused on a match right now and can't reply right away.")
-
         def steamHandler(self, nick, commandArg):
             print("!steam called by "+nick)
             self.sendMessage("Join Tom's stream steam group at steamcommunity.com/groups/tomdiamond or add him at steamcommunity.com/id/patchesyar")
