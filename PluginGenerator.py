@@ -1,6 +1,4 @@
-#testing file i/o for python
-#testing to see about a .py->.py code generator
-#this will be used for a command generator for boulderbot!
+#this is a command generator for boulderbot!
 
 import os
 import time
@@ -9,6 +7,10 @@ def makePlugin():
     np =input ("What is the name of the new plugin? ")
     print(os.listdir())
     time.sleep(1)
+    #############################
+    #you may need to change this#
+    #depending on your file home#
+    #############################
     os.chdir("C:\\Python34\\twitchy-master (1)\\Boulderbot master files\\plugins")
     print(os.listdir())
     time.sleep(1)

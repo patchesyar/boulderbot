@@ -46,3 +46,15 @@ Created by
 -
 Matthew McNamara  
 matt@mattmcn.com
+
+-
+John "Patchesyar" Lavoie Modifications and Additions
+johnlavoi@gmail.com
+
+Plugin Generator
+-
+The Boulderbot Plugin Generator project is an attempt at making a program to write plugins for the user. There are 3 options in the final build:
+1.	Call/Reply: generates a simple call/reply with a console echo and a sendMessage to print to chat
+-	Advanced commands: a sub menu for preset commands that see common use like raffles, request queues, etc.
+-	Custom commands: allows you to write a command from scratch to be compiled into your plugin
+
