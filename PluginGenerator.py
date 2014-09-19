@@ -49,8 +49,11 @@ def runMenu(file, np):
     compilePlugin(file, commandTriggers, np)
     
 def callGen(file):
+    #TODO: Detect apostrophes in the reply and literal them
     command= input("Input the name of the command trigger: ")
     reply= input("Input the reply: ")
+    reply=reply.replace('"', "\\\"")
+    reply=reply.replace("'", "\\\'")
     print(command)
     file.write("\tdef %sHandler (self, nick, commandArg)\n" %(command))
     file.write("\t\tprint('!%s called by '+nick)\n" %(command))
