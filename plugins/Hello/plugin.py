@@ -3,8 +3,7 @@ from plugins.BasePlugin import BasePlugin
 #from Twitchy import modHandlers
 
 class HelloPlugin(BasePlugin):
-        sezcopresent=False      #Sezco hates some of the commands, so when he is present,
-                                #I try to deactivate these commands
+        
         def __init__(self, twitchy):
                 super(HelloPlugin, self).__init__(twitchy)
 		
@@ -24,6 +23,8 @@ class HelloPlugin(BasePlugin):
                 #self.registerCommand('refresh', self.refresher)
                 self.registerTrigger('This is our town scrub', self.townHandler)
                 self.registerCommand('boulderbot', self.boulderHandler)
+                self.sezcopresent=False #Sezco hates some of the commands, so when he is present,
+                                        #I try to deactivate these commands
 
         def boulderHandler(self, nick, commandArg):
                 print("!boulderbot called by "+nick)
@@ -42,8 +43,9 @@ class HelloPlugin(BasePlugin):
                 #NOTE: only kills the plugin this command is in,
                 #Either use polymorphism to work for all plugins or
                 #find a way to apply it at top-level
-                self.sendMessage("Goodbye team, my fellow rocks need me elsewhere")
-                self._kill()
+                if nick=="tomdiamond" or nick== "raysfire":
+                        self.sendMessage("Goodbye team, my fellow rocks need me elsewhere")
+                        self._kill()
 
         def pogChampion(self, nick, commandArg):
                 print("PogChamp ROUND 5 HYPE PogChamp")
@@ -98,8 +100,9 @@ class HelloPlugin(BasePlugin):
                         self.sendMessage("Hello "+ nick +"!")
 
         def kawaiiHandler(self, nick, commandArg):
-                print("!kawaii called by "+nick)
-                self.sendMessage("You're so cute, "+ nick +"-senpai Keepo")
+                if not sezcoPresent:
+                        print("!kawaii called by "+nick)
+                        self.sendMessage("You're so cute, "+ nick +"-senpai Keepo")
 
         def highfiveHandler(self, nick, commandArg):
                 print("!highfive called by "+nick)
@@ -122,16 +125,15 @@ class HelloPlugin(BasePlugin):
                         #self.sendMessage("See ya, "+ nick)
 
         def modGivenTaken(self, nick, modGiven):
-                global sezcopresent
                 if modGiven:
                         print("Moderator status given to "+ nick)
                         if nick=="Sezco":
-                                sezcopresent=True
+                                self.sezcopresent=True
                                 print (str(sezcopresent))
                         #self.sendMessage("Run! "+ nick +" has been given moderator powers!")
                 else:
                         print("Moderator status removed from "+ nick)
                         if nick=="Sezco":
-                                sezcopresent=False
+                                self.sezcopresent=False
                                 print (str(sezcopresent))
                         #self.sendMessage("Relax, "+ nick +" has lost moderator powers")

@@ -126,44 +126,45 @@ def raffleGen(file):
     raffleList=("%sList"%command) #List of users entered in raffle
     raffleOn=("%sEnabled"%command) #class attribute that enables/disables raffle
     externals=["raffleOn=False", raffleList+"= []"] #attributes to be added to the class
-    newCommands=[command+"Starter", command+"Ender", command+"Lister", command+"Enterer"] #I officially hate Raffles
+    newCommands=[startRaffle, endRaffle, listUsers, command] #I officially hate Raffles
     ###Raffle Starter###
-    file.write("\tdef %sStarter (self, nick, commandArg):\n" % command)
-    file.write("\t\tprint('%sStarter called by '+nick)\n" % command)
+    file.write("\tdef %sHandler (self, nick, commandArg):\n" % startRaffle)
+    file.write("\t\tprint('%s called by '+nick)\n" % startRaffle)
     for i in range(len(names)):
         if i==0:
             file.write("\t\tif nick == '%s' "%names[i])
         else:
             file.write("or nick == '%s' "%names[i])
     file.write(":\n\t\t\tprint('this raffle is enabled')\n")
-    file.write("\t\t\traffleOn=True\n\n")
+    file.write("\t\tself.sendMessage('A raffle has started! Type !%s to enter')\n"%command)
+    file.write("\t\t\tself.%sOn=True\n\n"%command)
     ###Raffle Ender###
-    file.write("\tdef %sEnder (self, nick, commandArg):\n" % command)
-    file.write("\t\tprint('%sEnder called by '+nick)\n" % command)
+    file.write("\tdef %sHandler (self, nick, commandArg):\n" % endRaffle)
+    file.write("\t\tprint('%s called by '+nick)\n" % endRaffle)
     for i in range(len(names)):
         if i==0:
             file.write("\t\tif nick == '%s' "%names[i])
         else:
             file.write("or nick == '%s' "%names[i])
     file.write(":\n\t\t\tprint('this raffle is disabled')\n")
-    file.write("\t\traffleOn=False\n")#Disable Raffle Entering, choose a winner
-    file.write("\t\twinner=random.randint(0,%sList.size)\n"%command)
-    file.write("\t\tself.sendMessage(%sList[winner]+' has won the raffle')\n\n"%command)
+    file.write("\t\tself.%sOn=False\n"%command)#Disable Raffle Entering, choose a winner
+    file.write("\t\twinner=random.randint(0,len(self.%sList))\n"%command)
+    file.write("\t\tself.sendMessage(self.%sList[winner]+' has won the raffle')\n\n"%command)
     ###Raffle Lister###
-    file.write("\tdef %sLister (self, nick, commandArg):\n" % command)
-    file.write("\t\tprint('%sLister called by '+nick)\n" % command)
+    file.write("\tdef %sHandler (self, nick, commandArg):\n" %listUsers)
+    file.write("\t\tprint('%s called by '+nick)\n" % listUsers)
     file.write("\t\tself.sendMessage(str(len(%sList))+'people have entered the raffle')\n\n"%command)
     ###Raffle Enterer###
-    file.write("\tdef %sEnterer (self, nick, commandArg):\n"%command)
-    file.write("\t\tif %sEnabled:\n"%command)
+    file.write("\tdef %sHandler (self, nick, commandArg):\n"%command)
+    file.write("\t\tif self.%sOn:\n"%command)
     file.write("\t\t\tmakeEntry=True\n")
-    file.write("\t\t\tfor element in %sList:\n"%command)
+    file.write("\t\t\tfor element in self.%sList:\n"%command)
     file.write("\t\t\t\tif element==nick:\n")
     file.write("\t\t\t\t\tmakeEntry=false\n")
     file.write("\t\t\tif makeEntry:\n")
-    file.write("\t\t\t\t%sList.append(nick)\n"%command)
+    file.write("\t\t\t\tself.%sList.append(nick)\n"%command)
     if confirmUsersB:
-        file.write("\t\t\t\tself.sendMessage(nick+'has entered the raffle, type !%s to enter')\n\n"%command)
+        file.write("\t\t\t\tself.sendMessage(nick+' has entered the raffle, type !%s to enter')\n\n"%command)
     return newCommands, externals
         
 
