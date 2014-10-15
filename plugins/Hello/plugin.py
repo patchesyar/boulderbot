@@ -1,6 +1,4 @@
-import time #time delays to allow for multi-message commands (!match)
 from plugins.BasePlugin import BasePlugin
-#from Twitchy import modHandlers
 
 class HelloPlugin(BasePlugin):
         
@@ -100,7 +98,7 @@ class HelloPlugin(BasePlugin):
                         self.sendMessage("Hello "+ nick +"!")
 
         def kawaiiHandler(self, nick, commandArg):
-                if not sezcoPresent:
+                if not self.sezcopresent:
                         print("!kawaii called by "+nick)
                         self.sendMessage("You're so cute, "+ nick +"-senpai Keepo")
 
@@ -129,11 +127,11 @@ class HelloPlugin(BasePlugin):
                         print("Moderator status given to "+ nick)
                         if nick=="Sezco":
                                 self.sezcopresent=True
-                                print (str(sezcopresent))
+                                print (str(self.sezcopresent))
                         #self.sendMessage("Run! "+ nick +" has been given moderator powers!")
                 else:
                         print("Moderator status removed from "+ nick)
                         if nick=="Sezco":
                                 self.sezcopresent=False
-                                print (str(sezcopresent))
+                                print (str(self.sezcopresent))
                         #self.sendMessage("Relax, "+ nick +" has lost moderator powers")

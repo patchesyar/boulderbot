@@ -7,11 +7,7 @@ def makePlugin():
     np =input ("What is the name of the new plugin? ")
     print(os.listdir())
     time.sleep(1)
-    #############################
-    #you may need to change this#
-    #depending on your file home#
-    #############################
-    os.chdir("C:\\Python34\\twitchy-master (1)\\Boulderbot master files\\plugins")
+    os.chdir(".\\plugins")
     print(os.listdir())
     time.sleep(1)
     os.mkdir(np)
@@ -90,7 +86,8 @@ def advMenu (file):
     print("Select the premade function to create:")
     print("1. Raffle")
     print("2. Predictions")
-    print("3. I changed my mind, return to the main menu!")
+    print("3. Let Me Google That For You (LMGTFY)")
+    print("4. I changed my mind, return to the main menu!")
     readIn=int(input("=> "))
     newCommands=[]
     externals=[]
@@ -99,6 +96,8 @@ def advMenu (file):
     elif readIn==2:
         #newCommands(predGen(file))
         pass
+    elif readIn==3:
+        newCommands,externals=lmgtfyGen(file)
     else:
         pass
     return (newCommands,externals)
@@ -166,8 +165,28 @@ def raffleGen(file):
     if confirmUsersB:
         file.write("\t\t\t\tself.sendMessage(nick+' has entered the raffle, type !%s to enter')\n\n"%command)
     return newCommands, externals
-        
 
+##########################################
+###Let Me Google That For You Generator###
+##########################################
+
+#Takes in the command in the format !lmgtfy <arguments>
+#Posts a message in the chat with a link to the google results for the arguments
+
+def lmgtfyGen(file):
+    command=input("Input the name of your command: ")
+    file.write("\tdef %sHandler (self, nick, commandArg):\n"%command)
+    file.write("\t\tprint('%s called by '+nick)\n"%command)
+    file.write("\t\tif len(commandArg)==1:\n")
+    file.write("\t\t\tself.sendMessage('Hey %s, you gotta give me something to google!'%nick)\n")
+    file.write("\t\telse:\n")
+    file.write("\t\t\tgoogleargs=''\n")
+    file.write("\t\t\tfor i in range(1,len(commandArg)):\n")
+    file.write("\t\t\t\tgoogleargs+=(commandArg[i]+)\n")
+    file.write("\t\t\t\tif i!=len(commandArg):\n")
+    file.write("\t\t\t\t\tgoogleargs+='+'\n")
+    file.write("\t\t\tself.sendMessage('www.google.com/#q='+googleargs)\n")
+    return [command],[]    
 
 #main
 makePlugin()
