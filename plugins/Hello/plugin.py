@@ -1,4 +1,5 @@
 from plugins.BasePlugin import BasePlugin
+import random
 
 class HelloPlugin(BasePlugin):
         
@@ -11,7 +12,6 @@ class HelloPlugin(BasePlugin):
                 self.registerCommand('highfive', self.highfiveHandler)
                 self.registerForJoinPartNotifications(self.userJoinPart) # Greet a user, or say goodbye
                 self.registerForModNotifications(self.modGivenTaken)
-                self.registerCommand('steamtest', self.steamHandler)
                 self.registerCommand('transformice', self.mouseHandler)
                 self.registerCommand('hotsingles', self.loveHandler)
                 self.registerCommand('swag', self.swagHandler)
@@ -21,6 +21,7 @@ class HelloPlugin(BasePlugin):
                 #self.registerCommand('refresh', self.refresher)
                 self.registerTrigger('This is our town scrub', self.townHandler)
                 self.registerCommand('boulderbot', self.boulderHandler)
+                self.registerCommand('tuturu', self.tuturuHandler)
                 self.sezcopresent=False #Sezco hates some of the commands, so when he is present,
                                         #I try to deactivate these commands
 
@@ -75,11 +76,6 @@ class HelloPlugin(BasePlugin):
                 print("!shud called by "+nick)
                 self.sendMessage('Do you want to be as cool as Ian “Crackhead” Rays himself? Install Rayshud and you can at least look the part! rayshud.com')
 
-        def steamHandler(self, nick, commandArg):
-                print("!steamtest called by "+nick)
-                print(commandArg)
-                self.sendMessage("You want the steamid of "+ commandArg[1]+"?")
-
         def helloHandler(self, nick, commandArg):
                 print("!hello called by "+nick)
                 print(commandArg)
@@ -106,6 +102,12 @@ class HelloPlugin(BasePlugin):
                 print("!highfive called by "+nick)
                 print("ognDoAoh / \\ ognChoBro")
                 self.sendMessage("Poooound / " +"\\\\"+" DogFace")
+
+        def tuturuHandler(self, nick, commandArg):
+                #While this goes on for a mile, it's just so that I can bias the function
+                #to not post links or caps spam very often.
+                tuturu=["tehurn.com/tuturu","TUTURU!","tuturu","tuturu!","Tuturu!","tuturu","Tuturu!","Tuturu!","https://soundcloud.com/mcfreshdawg3000/wagner-feat-mayuri-shiina-ride-of-the-tutururies-extended-version"]
+                self.sendMessage(random.choice(tuturu))
 	
         def heyHandler(self, nick, fullMsg):
                 print("hey there called by " +nick)

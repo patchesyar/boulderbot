@@ -12,17 +12,26 @@ class raysfirePlugin(BasePlugin):
                 self.registerCommand('taj', self.tajHandler)
                 self.registerCommand('dasani', self.waterHandler)
                 self.registerCommand('crackhead', self.ianHandler)
-                self.registerCommand('dongers', self.dongerRayser)
                 self.registerCommand('raysfire',self.raysfireHandler)
+                self.registerCommand('raysbeef',self.beefrayser)
+                self.registerTrigger('settle it in smash',self.smashSettler)
+                self.registerCommand('online', self.onlineHandler)
+
+        def onlineHandler(self, nick, commandArg):
+                if nick=='tomdiamond':
+                        self.sendMessage("congratulations. You have spammed enough that Tom actually bothered to activate the bot")
+                
+        def smashSettler(self, nick, commandArg):
+                print(nick+"wants to settle it in smash")
+                self.sendMessage("http://i.imgur.com/44StnIs.jpg")
+
+        def beefrayser(self, nick, commandArg):
+                print(nick+"Has raysed the beef!")
+                self.sendMessage("It's time to rays the steaks! \\\\ raysBeef //")
 
         def raysfireHandler(self, nick, commandArg):
                 print("!raysfire called by "+nick)
                 self.sendMessage("Some unique stream commands are !dongers, !pbs, !taj, !crackhead, and !stream")
-
-        
-        def dongerRayser(self, nick, commandArg):
-                print(nick+" has raysed their buckets")
-                self.sendMessage("\\\\_/ ヽ༼ຈل͜ຈ༽ﾉ Rays your buckets ヽ༼ຈل͜ຈ༽ﾉ \\\\_/")
 
         def ianHandler(self, nick, commandArg):
                 print("!crackhead called by "+nick)

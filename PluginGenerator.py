@@ -94,7 +94,7 @@ def advMenu (file):
     if readIn==1:
         newCommands,externals=raffleGen(file)
     elif readIn==2:
-        #newCommands(predGen(file))
+        newCommands,externals=predGen(file)
         pass
     elif readIn==3:
         newCommands,externals=lmgtfyGen(file)
@@ -114,7 +114,7 @@ def raffleGen(file):
     endRaffle=input("Input the command to end the raffle: ")
     name="blah"
     names=[]
-    while name is not "":
+    while name is not "" or names is not []:
         name=input("Input the nick of a user that can moderate the raffle or nothing to continue: ")
         if name is not "":
             names.append(name)
@@ -124,7 +124,7 @@ def raffleGen(file):
     #compile raffle command
     raffleList=("%sList"%command) #List of users entered in raffle
     raffleOn=("%sEnabled"%command) #class attribute that enables/disables raffle
-    externals=["raffleOn=False", raffleList+"= []"] #attributes to be added to the class
+    externals=[raffleOn+"=False", raffleList+"= []"] #attributes to be added to the class
     newCommands=[startRaffle, endRaffle, listUsers, command] #I officially hate Raffles
     ###Raffle Starter###
     file.write("\tdef %sHandler (self, nick, commandArg):\n" % startRaffle)
@@ -136,7 +136,7 @@ def raffleGen(file):
             file.write("or nick == '%s' "%names[i])
     file.write(":\n\t\t\tprint('this raffle is enabled')\n")
     file.write("\t\tself.sendMessage('A raffle has started! Type !%s to enter')\n"%command)
-    file.write("\t\t\tself.%sOn=True\n\n"%command)
+    file.write("\t\tself.%s=True\n\n"%raffleOn)
     ###Raffle Ender###
     file.write("\tdef %sHandler (self, nick, commandArg):\n" % endRaffle)
     file.write("\t\tprint('%s called by '+nick)\n" % endRaffle)
@@ -146,22 +146,22 @@ def raffleGen(file):
         else:
             file.write("or nick == '%s' "%names[i])
     file.write(":\n\t\t\tprint('this raffle is disabled')\n")
-    file.write("\t\tself.%sOn=False\n"%command)#Disable Raffle Entering, choose a winner
-    file.write("\t\twinner=random.randint(0,len(self.%sList))\n"%command)
-    file.write("\t\tself.sendMessage(self.%sList[winner]+' has won the raffle')\n\n"%command)
+    file.write("\t\tself.%s=False\n"%raffleOn)#Disable Raffle Entering, choose a winner
+    file.write("\t\twinner=random.randint(0,len(self.%s))\n"%raffleList)
+    file.write("\t\tself.sendMessage(self.%s[winner]+' has won the raffle')\n\n"%raffleList)
     ###Raffle Lister###
     file.write("\tdef %sHandler (self, nick, commandArg):\n" %listUsers)
     file.write("\t\tprint('%s called by '+nick)\n" % listUsers)
-    file.write("\t\tself.sendMessage(str(len(%sList))+'people have entered the raffle')\n\n"%command)
+    file.write("\t\tself.sendMessage(str(len(%s))+'people have entered the raffle')\n\n"%raffleList)
     ###Raffle Enterer###
     file.write("\tdef %sHandler (self, nick, commandArg):\n"%command)
-    file.write("\t\tif self.%sOn:\n"%command)
+    file.write("\t\tif self.%s:\n"%raffleOn)
     file.write("\t\t\tmakeEntry=True\n")
-    file.write("\t\t\tfor element in self.%sList:\n"%command)
+    file.write("\t\t\tfor element in self.%s:\n"%raffleList)
     file.write("\t\t\t\tif element==nick:\n")
     file.write("\t\t\t\t\tmakeEntry=false\n")
     file.write("\t\t\tif makeEntry:\n")
-    file.write("\t\t\t\tself.%sList.append(nick)\n"%command)
+    file.write("\t\t\t\tself.%s.append(nick)\n"%raffleList)
     if confirmUsersB:
         file.write("\t\t\t\tself.sendMessage(nick+' has entered the raffle, type !%s to enter')\n\n"%command)
     return newCommands, externals
@@ -186,7 +186,46 @@ def lmgtfyGen(file):
     file.write("\t\t\t\tif i!=len(commandArg):\n")
     file.write("\t\t\t\t\tgoogleargs+='+'\n")
     file.write("\t\t\tself.sendMessage('www.google.com/#q='+googleargs)\n")
-    return [command],[]    
+    return [command],[]
+
+##########################
+###Prediction Generator###
+##########################
+
+def predGen(file):
+    newCommands=[]
+    command=input("Input the name of the command to make a prediction: ")
+    newCommands.append(command)
+    startCommand=input("Input the name of the command to start predictions: ")
+    newCommands.append(startCommand)
+    endCommand=input("Input the name of the command to end predictions: ")
+    newCommands.append(endCommand)
+    checkCommand=input("Input the name of the command to check predictions: ")
+    newCommands.append(checkCommand)
+    listBoolean=input("Do you want a command to list entered users? ")
+    if (listBoolean.lower()=="yes" or listBoolean.lower()=="y"):
+        listCommand=input("Input the name of the command to list entered users: ")
+        newCommands.append(listCommand)
+    entryString=input("Do you want to print a confirmation message on entry? ")
+    if (entryString.lower()=="yes" or entryString.lower()=="y"):
+        entryBoolean=True
+    else:
+        entryBoolean=False
+    name="blah"
+    names=[]
+    while name is not "" or names is not []:
+        name=input("Input the nick of a user that can moderate the raffle or nothing to continue: ")
+        if name is not "":
+            names.append(name)
+
+    predsOn="%sEnabled" % command
+    predsList="%sList" %command
+    externals=[predsOn+"=False", raffleList+"= []"] #attributes to be added to the class
+
+    #Done with Variables, onto file writing.
+
+
+    return newCommands, externals
 
 #main
 makePlugin()
