@@ -13,7 +13,8 @@ class raysfirePlugin(BasePlugin):
                 self.registerCommand('dasani', self.waterHandler)
                 self.registerCommand('crackhead', self.ianHandler)
                 self.registerCommand('raysfire',self.raysfireHandler)
-                self.registerCommand('raysbeef',self.beefrayser)
+                #self.registerCommand('raysbeef',self.beefrayser)
+                ###This command requires boulder to be subbed to rays. Budget cuts###
                 self.registerTrigger('settle it in smash',self.smashSettler)
                 self.registerCommand('online', self.onlineHandler)
 
